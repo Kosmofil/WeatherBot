@@ -24,12 +24,12 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
     public String getBotUsername() {
-        return "Kosmos_Helper_Taskbot";
+        return "-------------";//нужно имя бота
     }
 
     @Override
     public String getBotToken() {
-        return "317299056:AAFHXGMWUtDd_K-ukxZMQ-zILtbf5SBprrE";
+        return "-----------------------------";//нужен ключ выданный botfather
     }
 
 
