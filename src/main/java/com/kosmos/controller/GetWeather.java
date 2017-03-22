@@ -17,15 +17,12 @@ public class GetWeather {
     }
 
     private static int IO_COUNT = 0;
-
-    List<Document> documents = new ArrayList<>();
-   static Document doc = null;
     private static final String url = "https://www.gismeteo.ru/weather-almaty-5205/";
 
+    // TODO: 22.03.17 запрос города GET and POST 
     public static String getWeather(){
         Elements elements = getElements(url).get().select(".content");
-       String res = getTextFromElements(elements, "div[class=js_meas_container temperature]");
-       return res;
+        return getTextFromElements(elements, "div[class=js_meas_container temperature]");
     }
 
     private static String getTextFromElements(Elements element, String cssQuery) {//получаем текст
@@ -33,7 +30,7 @@ public class GetWeather {
         if (result != null) {
             return result.text();
         }
-        return null;//null продумать
+        return null;
     }
 
     private static Optional<Document> getElements(String url) {
@@ -41,7 +38,7 @@ public class GetWeather {
         try {
             documents = Optional.of(Jsoup.connect(url).get());
         } catch (IOException e) {
-            IO_COUNT++;//e.printStackTrace();
+            IO_COUNT++;
         }
         return documents;
     }
