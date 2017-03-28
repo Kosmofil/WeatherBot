@@ -6,24 +6,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class GetWeather {
 
-    public static void main(String[] args) {
-        getWeather();
+    public static void main(String[] args) throws IOException {
+
     }
 
     private static int IO_COUNT = 0;
     private static final String url = "https://www.gismeteo.ru/weather-almaty-5205/";
 
-    // TODO: 22.03.17 запрос города GET and POST 
     public static String getWeather(){
         Elements elements = getElements(url).get().select(".content");
         return getTextFromElements(elements, "div[class=js_meas_container temperature]");
     }
+
 
     private static String getTextFromElements(Elements element, String cssQuery) {//получаем текст
         Elements result = element.select(cssQuery);

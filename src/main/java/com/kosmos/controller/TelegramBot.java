@@ -1,12 +1,16 @@
 package com.kosmos.controller;
 
 import org.telegram.telegrambots.ApiContextInitializer;
-        import org.telegram.telegrambots.exceptions.TelegramApiException;
-        import org.telegram.telegrambots.TelegramBotsApi;
-        import org.telegram.telegrambots.api.methods.send.SendMessage;
-        import org.telegram.telegrambots.api.objects.Message;
-        import org.telegram.telegrambots.api.objects.Update;
-        import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.api.methods.send.SendMessage;
+import org.telegram.telegrambots.api.objects.Message;
+import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.logging.BotLogger;
+
+import static com.kosmos.controller.commands.CommandList.*;
 
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -23,42 +27,84 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
 
+    @Override
     public String getBotUsername() {
-        return "-------------";//нужно имя бота
+        return "_____________";
     }
 
     @Override
     public String getBotToken() {
-        return "-----------------------------";//нужен ключ выданный botfather
+        return "___________________";
     }
 
-
+    @Override
     public void onUpdateReceived(Update update) {
-        Message message = update.getMessage();
-        if (message != null && message.hasText()) {
-            if (message.getText().equals("/help"))
-            { sendMsg(message, "Привет, я робот");}
-            else if (message.getText().equals("/weather")){
-                sendMsg(message, "сейчас температура в Алматы: " + GetWeather.getWeather());
+        try {
+            if (update.hasMessage()) {
+                Message message = update.getMessage();
+                if (message.hasText() || message.hasLocation()) {
+                    IncomingMessage(message);
+                }
             }
-            else
-            {
-                sendMsg(message, "Я не знаю что ответить на это");
-            }
+        } catch (Exception e) {
+            BotLogger.error(ERROR_MES, e);
         }
     }
 
-    private void sendMsg(Message message, String text) {
+    public void IncomingMessage(Message message) throws TelegramApiException {
+
+        SendMessage sendMessageRequest = new SendMessage();
+
+        switch (message.getText()) {
+            case COMMAND_HELP:
+                sendMessageRequest = sendHelp(message);
+                break;
+            case COMMAND_START:
+                sendMessageRequest = sendTest(message);
+                break;
+            case COMMAND_WEATHER:
+                sendMessageRequest = sendWeather(message);
+                break;
+            case COMMAND_COMMANDS:
+                sendMessageRequest = sendTextMessage(message);
+        }
+
+        sendMessage(sendMessageRequest);
+
+    }
+
+    private SendMessage sendHelp(Message message) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
         sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setReplyToMessageId(message.getMessageId());
-        sendMessage.setText(text);
-        try {
-            sendMessage(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        sendMessage.setText(HELP_TEXT);
+        return sendMessage;
+    }
+
+    private SendMessage sendWeather(Message message) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setText("сейчас температура в Алматы: " + GetWeather.getWeather());
+        return sendMessage;
+    }
+
+    private SendMessage sendTest(Message message) throws TelegramApiRequestException {
+        SendMessage sendingMessage = new SendMessage();
+        sendingMessage.enableMarkdown(false);
+        sendingMessage.setChatId(message.getChatId().toString());
+        //sendingMessage.setReplyToMessageId(message.getMessageId());
+        sendingMessage.setText("test");
+
+        return sendingMessage;
+    }
+
+    private SendMessage sendTextMessage(Message message) {
+        SendMessage sendingMessage = new SendMessage();
+        sendingMessage.enableMarkdown(true);
+        sendingMessage.setChatId(message.getChatId().toString());
+        sendingMessage.setText(COMMANDS_TEXT);
+        return sendingMessage;
     }
 
 }
