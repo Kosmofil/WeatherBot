@@ -1,4 +1,4 @@
-package com.kosmos.controller;
+package com.kosmos.controller.handler;
 
 
 import org.jsoup.Jsoup;
@@ -10,10 +10,6 @@ import java.util.*;
 
 public class GetWeather {
 
-    public static void main(String[] args) throws IOException {
-
-    }
-
     private static int IO_COUNT = 0;
     private static final String url = "https://www.gismeteo.ru/weather-almaty-5205/";
 
@@ -22,13 +18,9 @@ public class GetWeather {
         return getTextFromElements(elements, "div[class=js_meas_container temperature]");
     }
 
-
     private static String getTextFromElements(Elements element, String cssQuery) {//получаем текст
         Elements result = element.select(cssQuery);
-        if (result != null) {
-            return result.text();
-        }
-        return null;
+        return result != null ? result.text() : null;
     }
 
     private static Optional<Document> getElements(String url) {
