@@ -15,8 +15,10 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static com.kosmos.model.commands.CommandList.*;
+
 
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -24,7 +26,6 @@ public class TelegramBot extends TelegramLongPollingBot {
     private static final Logger logger = LoggerFactory.getLogger(TelegramBot.class);
 
     public static void runBot() {
-
 
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
@@ -39,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotUsername() {
-        return null;
+        return "Jarvis";
     }
 
     @Override
@@ -70,70 +71,46 @@ public class TelegramBot extends TelegramLongPollingBot {
                 logger.info("help run = " + COUNT_HELP++);
                 sendMessageRequest = send(message, HELP_TEXT);
                 break;
-//            case COMMAND_START:
-//                sendMessageRequest = send(message, COMMAND_START);
-//                break;
             case COMMAND_WEATHER:
                 sendMessageRequest = sendWeather(message);
                 break;
             case COMMAND_COMMANDS:
                 sendMessageRequest = send(message, COMMANDS_TEXT);
                 break;
-            case COMMAND_START_BASH:
-                sendMessageRequest = sendStartBAsh(message);
-                break;
             case COMMAND_NEXT_BASH:
                 sendMessageRequest = sendRandomBash(message);
                 break;
-                default:
-                    sendMessageRequest = sendTest(message);
+            default:
+                sendMessageRequest = send(message, DEFAULT_TEXT);
         }
-
         sendMessage(sendMessageRequest);
 
     }
 
-    private SendMessage send(Message message, String command) throws TelegramApiRequestException, IOException {
-        SendMessage sendingMessage = new SendMessage();
-        sendingMessage.enableMarkdown(true);
-        sendingMessage.setChatId(message.getChatId().toString());
-        sendingMessage.setText(command);
-        return sendingMessage;
-    }
 
+    private SendMessage send(Message message, String command) throws TelegramApiRequestException, IOException {
+        logger.info("chat ID = " + message.getChatId().toString());
+        if (command.equals(DEFAULT_TEXT)) {
+            return conSend(message)
+                    .setReplyToMessageId(message.getMessageId())
+                    .setText(DEFAULT_TEXT);
+        } else
+            return conSend(message).setText(command);
+
+    }
 
     private SendMessage sendWeather(Message message) {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setText("сейчас температура в Алматы: " + GetWeather.getWeather());
-        return sendMessage;
+        return conSend(message).setText("сейчас температура в Алматы: " + GetWeather.getWeather());
     }
 
-    private SendMessage sendStartBAsh(Message message) throws IOException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setText("bash is running");
-        GetBashorg.startBash();
-        return sendMessage;
-    }
     private SendMessage sendRandomBash(Message message) throws IOException {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(message.getChatId().toString());
-        sendMessage.setText(GetBashorg.getingBash());
-        return sendMessage;
+        return conSend(message).setText(GetBashorg.getingBash());
     }
 
-    private SendMessage sendTest(Message message) throws TelegramApiRequestException, IOException {
+    private static SendMessage conSend(Message message) {
         SendMessage sendingMessage = new SendMessage();
         sendingMessage.enableMarkdown(true);
         sendingMessage.setChatId(message.getChatId().toString());
-        String test = message.getText();
-        sendingMessage.setReplyToMessageId(message.getMessageId());
-       sendingMessage.setText("на данный момент, я мало что умею, но мы с моим создателем \n " +
-               "работаем над моей производительность и способностями");
         return sendingMessage;
     }
 

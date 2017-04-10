@@ -4,12 +4,12 @@ package com.kosmos.controller.handler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
 
 import java.io.IOException;
 import java.util.*;
 
-public class GetBashorg {
+public class GetBashorg implements Runnable {
 
 
     private static final String url = "http://bashorg.org/page/";
@@ -22,13 +22,6 @@ public class GetBashorg {
 
         int key = (int) (Math.random() * mapText.size());
         return mapText.get(key);
-    }
-
-    //запускаем обработку страниц баша
-    public static void startBash() throws IOException {
-        for (int i = 0; i <= 100; i++) {
-            getBash(i);
-        }
     }
 
     //добавляем в map текст цитаты
@@ -48,5 +41,16 @@ public class GetBashorg {
                 .replaceAll("(<br>)\n+(\\1)*", "\n")
                 .replaceAll("<br>", "")
                 : null;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i <= 100; i++) {
+            try {
+                getBash(i);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
