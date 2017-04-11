@@ -1,38 +1,31 @@
 package com.kosmos.controller.handler;
 
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-
-
 import java.io.IOException;
 import java.util.*;
 
 public class GetBashorg implements Runnable {
 
-
     private static final String url = "http://bashorg.org/page/";
-    static int[] count = {0};
-    private static HashMap<Integer, String> mapText = new HashMap<>();
+    private static ArrayList<String> listText = new ArrayList<>();
 
 
-    //рандомно получаем цитату
-    public static String getingBash() {
-
-        int key = (int) (Math.random() * mapText.size());
-        return mapText.get(key);
+    private static void getQuoteInPage(int countPage) throws IOException {
+        Document document = Jsoup.connect(url + countPage).get();
+        List<Element> elements = document.select(".quote");
+        for (Element elem : elements
+                ) {
+            String qoute = get(elem, "div[class=quote]");
+            listText.add(qoute);
+        }
     }
 
-    //добавляем в map текст цитаты
-    private static void getBash(int countPage) throws IOException {
-
-        Document document = Jsoup.connect(url + countPage).get();
-        final List<Element> elements = document.select(".quote");
-        elements.forEach((elem) -> {
-            String text = get(elem, "div[class=quote]");
-            mapText.put(count[0]++, text);
-        });
+    //рандомно получаем цитату
+    public static String getRandomQoute() {
+        int key = (int) (Math.random() * listText.size());
+        return listText.get(key);
     }
 
     private static String get(Element element, String cssQuery) {
@@ -45,12 +38,13 @@ public class GetBashorg implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i <= 100; i++) {
+        for (int i = 0; i <= 1000; i++) {
             try {
-                getBash(i);
+                getQuoteInPage(i);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
 }

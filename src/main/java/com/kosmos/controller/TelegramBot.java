@@ -15,7 +15,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import java.io.IOException;
-import java.util.Date;
 
 import static com.kosmos.model.commands.CommandList.*;
 
@@ -89,7 +88,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
     private SendMessage send(Message message, String command) throws TelegramApiRequestException, IOException {
-        logger.info("chat ID = " + message.getChatId().toString());
+
         if (command.equals(DEFAULT_TEXT)) {
             return conSend(message)
                     .setReplyToMessageId(message.getMessageId())
@@ -104,8 +103,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     }
 
     private SendMessage sendRandomBash(Message message) throws IOException {
-        return conSend(message).setText(GetBashorg.getingBash());
+        return conSend(message).setText(GetBashorg.getRandomQoute());
     }
+
 
     private static SendMessage conSend(Message message) {
         SendMessage sendingMessage = new SendMessage();
