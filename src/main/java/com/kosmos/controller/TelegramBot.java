@@ -16,8 +16,9 @@ import org.telegram.telegrambots.logging.BotLogger;
 
 import java.io.IOException;
 
+import static com.kosmos.controller.handler.GetExchange.getAllElements;
+import static com.kosmos.controller.handler.GetExchange.getCurrency;
 import static com.kosmos.model.commands.CommandList.*;
-
 
 
 public class TelegramBot extends TelegramLongPollingBot {
@@ -61,6 +62,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+
     public void IncomingMessage(Message message) throws TelegramApiException, IOException {
 
         SendMessage sendMessageRequest;
@@ -79,35 +81,50 @@ public class TelegramBot extends TelegramLongPollingBot {
             case COMMAND_NEXT_BASH:
                 sendMessageRequest = sendRandomBash(message);
                 break;
+            case USD:
+            case EUR:
+            case RUB:
+            case AUD:
+            case CNY:
+            case KGS:
+                sendMessageRequest = sendCurrency(message);
+                break;
             default:
                 sendMessageRequest = send(message, DEFAULT_TEXT);
         }
+//        if (message.getText().equals("USD")) {
+//            sendMessageRequest = sendCurrency(message);
+//        } else if (message.getText().equals("рубль")) {
+//            sendMessageRequest = sendCurrency(message);
+//        }
         sendMessage(sendMessageRequest);
-
     }
 
 
     private SendMessage send(Message message, String command) throws TelegramApiRequestException, IOException {
 
         if (command.equals(DEFAULT_TEXT)) {
-            return conSend(message)
+            return configSend(message)
                     .setReplyToMessageId(message.getMessageId())
                     .setText(DEFAULT_TEXT);
         } else
-            return conSend(message).setText(command);
+            return configSend(message).setText(command);
 
     }
 
     private SendMessage sendWeather(Message message) {
-        return conSend(message).setText("сейчас температура в Алматы: " + GetWeather.getWeather());
+        return configSend(message).setText("сейчас температура в Алматы: " + GetWeather.getWeather());
     }
 
     private SendMessage sendRandomBash(Message message) throws IOException {
-        return conSend(message).setText(GetBashorg.getRandomQoute());
+        return configSend(message).setText(GetBashorg.getRandomQoute());
     }
 
+    private SendMessage sendCurrency(Message message) throws IOException {
+        return configSend(message).setText(getCurrency(message.getText()));
+    }
 
-    private static SendMessage conSend(Message message) {
+    private static SendMessage configSend(Message message) {
         SendMessage sendingMessage = new SendMessage();
         sendingMessage.enableMarkdown(true);
         sendingMessage.setChatId(message.getChatId().toString());
