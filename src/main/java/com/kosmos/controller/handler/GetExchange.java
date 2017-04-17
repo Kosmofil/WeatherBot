@@ -27,7 +27,6 @@ public class GetExchange {
         }
     }
 
-
     public static String getCurrency(String currency) {
 
         String result = null;
@@ -37,11 +36,6 @@ public class GetExchange {
             }
         }
         return result;
-    }
-
-    public static String getAllElements() {
-        String temp = currencyList.toString();
-        return temp;
     }
 
 }
