@@ -16,7 +16,6 @@ import org.telegram.telegrambots.logging.BotLogger;
 
 import java.io.IOException;
 
-import static com.kosmos.controller.handler.GetExchange.getAllElements;
 import static com.kosmos.controller.handler.GetExchange.getCurrency;
 import static com.kosmos.model.commands.CommandList.*;
 
@@ -92,11 +91,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             default:
                 sendMessageRequest = send(message, DEFAULT_TEXT);
         }
-//        if (message.getText().equals("USD")) {
-//            sendMessageRequest = sendCurrency(message);
-//        } else if (message.getText().equals("рубль")) {
-//            sendMessageRequest = sendCurrency(message);
-//        }
+
         sendMessage(sendMessageRequest);
     }
 
