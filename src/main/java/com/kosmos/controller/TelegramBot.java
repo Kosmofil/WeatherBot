@@ -15,8 +15,12 @@ import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.kosmos.controller.handler.GetExchange.getCurrency;
+import static com.kosmos.controller.handler.GetExchange.getExch;
 import static com.kosmos.model.commands.CommandList.*;
 
 
@@ -80,18 +84,30 @@ public class TelegramBot extends TelegramLongPollingBot {
             case COMMAND_NEXT_BASH:
                 sendMessageRequest = sendRandomBash(message);
                 break;
-            case USD:
-            case EUR:
-            case RUB:
-            case AUD:
-            case CNY:
-            case KGS:
-                sendMessageRequest = sendCurrency(message);
-                break;
             default:
                 sendMessageRequest = send(message, DEFAULT_TEXT);
         }
 
+      for (String anEUR : USD_LIST){
+          if (message.getText().contains(anEUR)){
+              sendMessageRequest = sendCurrency(message, USD);
+          }
+      }
+        for (String anUsd : EUR_LIST) {
+            if (message.getText().contains(anUsd)) {
+                sendMessageRequest = sendCurrency(message, EUR);
+            }
+        }
+        for (String anEUR : RUB_LIST){
+            if (message.getText().contains(anEUR)){
+                sendMessageRequest = sendCurrency(message, RUB);
+            }
+        }
+        for (String anEUR : AUD_LIST){
+            if (message.getText().contains(anEUR)){
+                sendMessageRequest = sendCurrency(message, AUD);
+            }
+        }
         sendMessage(sendMessageRequest);
     }
 
@@ -115,8 +131,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         return configSend(message).setText(GetBashorg.getRandomQoute());
     }
 
-    private SendMessage sendCurrency(Message message) throws IOException {
-        return configSend(message).setText(getCurrency(message.getText()));
+    private SendMessage sendCurrency(Message message, String currency) throws IOException {
+        getExch();//вызываем этот метод всегда, чтобы была актуальная инфа
+        return configSend(message).setText(getCurrency(currency));
     }
 
     private static SendMessage configSend(Message message) {

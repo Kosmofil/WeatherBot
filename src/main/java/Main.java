@@ -9,7 +9,6 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        GetExchange.getExch();
         GetBashorg bash = new GetBashorg();
         Thread myThread = new Thread(bash);
         myThread.start();
