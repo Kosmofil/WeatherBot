@@ -37,4 +37,14 @@ public class GetExchange {
         return result;
     }
 
+    // TODO: 18.04.17 пересмотреть данный метод
+    //получение значения валюты
+    public static double getCurrencyValue(String currency) {
+        String temp = getCurrency(currency).replace("KZT", "char")
+                .replace("-", "char")
+                .replace("+", "char");
+        String[] split = temp.split("char");
+        return Double.parseDouble(split[1]);
+    }
+
 }
