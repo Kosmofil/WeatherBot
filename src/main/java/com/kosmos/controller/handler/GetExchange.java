@@ -9,13 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GetExchange {
-
-
+    private static final String URL_EXCHENGE = "https://kurs-valut.kz/";
     private static ArrayList<String> currencyList = new ArrayList<>();
 
     public static void getExch() throws IOException {
         Document document = Jsoup
-                .connect("https://kurs-valut.kz/").get();
+                .connect(URL_EXCHENGE).get();
         Elements rows = document
                 .select("div[class=panel-body]")
                 .select("table")
@@ -30,9 +29,9 @@ public class GetExchange {
     public static String getCurrency(String currency) {
 
         String result = null;
-        for (int i = 0; i < currencyList.size(); i++) {
-            if (currencyList.get(i).contains(currency)) {
-                result = currencyList.get(i);
+        for (String aCurrencyList : currencyList) {
+            if (aCurrencyList.contains(currency)) {
+                result = aCurrencyList;
             }
         }
         return result;
