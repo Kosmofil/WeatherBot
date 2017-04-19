@@ -25,7 +25,7 @@ public class GetExchange {
             currencyList.add(colums);
         }
     }
-
+    //TODO: 19.04.17 при недоступности сайте вывести исключение
     public static String getCurrency(String currency) {
 
         String result = null;
