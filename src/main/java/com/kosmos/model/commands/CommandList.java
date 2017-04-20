@@ -22,9 +22,9 @@ public class CommandList {
     public static final String AUD = "AUD";
     public static final String CNY = "CNY";
 
-    public static final List<String> RUB_LIST = Arrays.asList("Рубль", "рубль", "копейки", "RUB");
+    public static final List<String> RUB_LIST = Arrays.asList("рубль", "копейки", "RUB");
     public static final List<String> USD_LIST = Arrays.asList("доллар", "бакс", "зелень", "USD");
-    public static final List<String> EUR_LIST = Arrays.asList("евро", "eur", "EUR", "Евро");
+    public static final List<String> EUR_LIST = Arrays.asList("евро", "eur", "EUR");
     public static final List<String> AUD_LIST = Arrays.asList("адоллар", "австралийский", "AUD");
 
 

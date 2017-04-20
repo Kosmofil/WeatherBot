@@ -13,11 +13,7 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.logging.BotLogger;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static com.kosmos.controller.handler.GetExchange.getCurrency;
 import static com.kosmos.controller.handler.GetExchange.getExch;
@@ -89,22 +85,22 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
 
       for (String anEUR : USD_LIST){
-          if (message.getText().contains(anEUR)){
+          if (message.getText().toLowerCase().contains(anEUR)){
               sendMessageRequest = sendCurrency(message, USD);
           }
       }
         for (String anUsd : EUR_LIST) {
-            if (message.getText().contains(anUsd)) {
+            if (message.getText().toLowerCase().contains(anUsd)) {
                 sendMessageRequest = sendCurrency(message, EUR);
             }
         }
         for (String anEUR : RUB_LIST){
-            if (message.getText().contains(anEUR)){
+            if (message.getText().toLowerCase().contains(anEUR)){
                 sendMessageRequest = sendCurrency(message, RUB);
             }
         }
         for (String anEUR : AUD_LIST){
-            if (message.getText().contains(anEUR)){
+            if (message.getText().toLowerCase().contains(anEUR)){
                 sendMessageRequest = sendCurrency(message, AUD);
             }
         }
