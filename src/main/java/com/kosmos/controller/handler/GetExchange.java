@@ -25,10 +25,10 @@ public class GetExchange {
             currencyList.add(colums);
         }
     }
-    //TODO: 19.04.17 при недоступности сайте вывести исключение
+
     public static String getCurrency(String currency) {
 
-        String result = null;
+        String result = "Данные не доступны";
         for (String aCurrencyList : currencyList) {
             if (aCurrencyList.contains(currency)) {
                 result = aCurrencyList;
@@ -40,7 +40,9 @@ public class GetExchange {
     public static double getCurrencyValue(String currency) {
         String temp = getCurrency(currency).replace("KZT", "char")
                 .replace("-", "char")
-                .replace("+", "char");
+                .replace("+", "char")
+                .replace("0.", "char");// TODO: 20.04.17 так не пойдет... пока темная магия
+
         String[] split = temp.split("char");
         return Double.parseDouble(split[1]);
     }
