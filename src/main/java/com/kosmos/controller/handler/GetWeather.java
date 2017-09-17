@@ -19,8 +19,9 @@ public class GetWeather {
     private static final String url = "https://www.gismeteo.ru/weather-almaty-5205/";
 
     public static String getWeather(){
+        // TODO: 17.09.17 create проверку на изменения 
         Elements elements = getElements(url).get().select(".content");
-        return getTextFromElements(elements, "div[class=js_meas_container temperature]");
+        return getTextFromElements(elements, "div[class=js_meas_container temperature tab-weather__value]");
     }
 
     private static String getTextFromElements(Elements element, String cssQuery) {//получаем текст

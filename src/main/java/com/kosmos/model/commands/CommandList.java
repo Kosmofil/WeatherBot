@@ -14,6 +14,7 @@ public class CommandList {
     public static final String COMMAND_WEATHER = "/weather";
     public static final String COMMAND_COMMANDS = "/commands";
     public static final String ERROR_MES = "error bot";
+    public static final String ARTRIAL_PRESSURE = "Артериальное давление";
 
     public static final String USD = "USD";
     public static final String RUB = "RUB";

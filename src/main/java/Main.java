@@ -1,11 +1,10 @@
-import com.kosmos.controller.TelegramBot;
+
 import com.kosmos.controller.handler.GetBashorg;
-
-
+import com.kosmos.view.MainWindow;
 import java.io.IOException;
 
 
-public class Main {
+public class Main{
 
     public static void main(String[] args) throws IOException {
 
@@ -13,7 +12,16 @@ public class Main {
         Thread myThread = new Thread(bash);
         myThread.start();
 
-        TelegramBot.runBot();
+//        myThread.isInterrupted();//проверка на
+//        myThread.interrupt();//Безопасно закрываеть поток
+
+
+       MainWindow window = new MainWindow();
+        window.setVisible(true);
+
+//        LoginWindow loginWindow = new LoginWindow();
+//        loginWindow.setVisible(true);
+//        TelegramBot.runBot();
     }
 
 }
